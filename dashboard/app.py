@@ -52,10 +52,10 @@ with col2:
 
 # Bottom feed display
 st.subheader("🧪 Simulated Live Chaos Feed")
-st.code(\"\"\"
+st.code("""
 [
   {"source": "x.com", "content": "IMF warns of stagflation."},
   {"source": "reddit/finance", "content": "NVIDIA insiders offloading shares"},
   {"source": "investing.com", "content": "Gold spikes on currency devaluation fears"}
 ]
-\"\"\")
+""")
