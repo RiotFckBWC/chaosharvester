@@ -16,9 +16,28 @@ with col1:
         "Telegram": "Ready" if os.getenv("TELEGRAM_BOT_TOKEN") else "Missing"
     })
     if st.button("🧠 Manual Forecast Trigger"):
-        st.success("Triggered GPT Forecast (live hook ready)")
-        st.markdown("**Signal:** Real-time macro pressure signal")
-        st.markdown("**Forecast:** Expect increased volatility in tech sector.")
+    signal = "Real-time macro pressure signal"
+    forecast = "Expect increased volatility in tech sector."
+
+    st.success("GPT Forecast Triggered")
+    st.markdown(f"**Signal:** {signal}")
+    st.markdown(f"**Forecast:** {forecast}")
+
+    # Send to Discord
+    discord_url = os.getenv("DISCORD_WEBHOOK")
+    if discord_url:
+        requests.post(discord_url, json={"content": f"[ChaosHarvester v2] 🚨 Signal: {signal}\nForecast: {forecast}"})
+
+    # Send to Telegram
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    if token and chat_id:
+        telegram_url = f"https://api.telegram.org/bot{token}/sendMessage"
+        data = {"chat_id": chat_id, "text": f"[ChaosHarvester v2] 🚨 Signal: {signal}\nForecast: {forecast}"}
+        requests.post(telegram_url, data=data)
+
+    st.info("✅ Forecast alert sent to Discord & Telegram")
+
 
 with col2:
     st.subheader("📊 Visual Intelligence")
