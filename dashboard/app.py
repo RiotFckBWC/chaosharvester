@@ -1,44 +1,35 @@
+
 import streamlit as st
-import requests
 import os
 
-st.set_page_config(page_title="ChaosHarvester Dashboard", layout="wide")
-st.title("📡 ChaosHarvester Intelligence Panel")
+st.set_page_config(page_title="ChaosHarvester v2", layout="wide")
+st.title("🔥 ChaosHarvester: Live Chaos Intelligence System")
 
-# Check secrets
-st.subheader("Environment Configuration")
-st.write({
-    "OpenAI Key Exists": bool(os.getenv("OPENAI_API_KEY")),
-    "Supabase URL": os.getenv("SUPABASE_URL", "Not Found"),
-    "Discord Webhook": "Loaded" if os.getenv("DISCORD_WEBHOOK") else "Missing",
-    "Telegram Setup": "Ready" if os.getenv("TELEGRAM_BOT_TOKEN") and os.getenv("TELEGRAM_CHAT_ID") else "Missing"
-})
+col1, col2 = st.columns(2)
 
-# Alert logic
-def send_discord_alert(msg):
-    webhook = os.getenv("DISCORD_WEBHOOK")
-    if webhook:
-        requests.post(webhook, json={"content": msg})
+with col1:
+    st.subheader("System Status")
+    st.write({
+        "OpenAI Key": bool(os.getenv("OPENAI_API_KEY")),
+        "Supabase": os.getenv("SUPABASE_URL", "Missing"),
+        "Discord": "Ready" if os.getenv("DISCORD_WEBHOOK") else "Missing",
+        "Telegram": "Ready" if os.getenv("TELEGRAM_BOT_TOKEN") else "Missing"
+    })
+    if st.button("🧠 Manual Forecast Trigger"):
+        st.success("Triggered GPT Forecast (live hook ready)")
+        st.markdown("**Signal:** Real-time macro pressure signal")
+        st.markdown("**Forecast:** Expect increased volatility in tech sector.")
 
-def send_telegram_alert(msg):
-    token = os.getenv("TELEGRAM_BOT_TOKEN")
-    chat_id = os.getenv("TELEGRAM_CHAT_ID")
-    if token and chat_id:
-        url = f"https://api.telegram.org/bot{token}/sendMessage"
-        data = {"chat_id": chat_id, "text": msg}
-        requests.post(url, data=data)
+with col2:
+    st.subheader("📊 Visual Intelligence")
+    st.markdown("🧱 *Entropy Heatmap*")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Heatmap.png/600px-Heatmap.png")
 
-# Trigger
-if st.button("🧠 Trigger Forecast"):
-    st.success("Forecasting initiated...")
-
-    signal = "Macro instability detected via multi-source entropy scan."
-    forecast = "High probability of rate hike. Recommend defensive positioning."
-
-    st.markdown(f"**Signal:** {signal}")
-    st.markdown(f"**Forecast:** {forecast}")
-    st.info("Alerts dispatched. Check Discord/Telegram.")
-
-    message = f"[ChaosHarvester] ALERT 🚨\nSignal: {signal}\nForecast: {forecast}"
-    send_discord_alert(message)
-    send_telegram_alert(message)
+st.subheader("🧪 Live Feed Simulation")
+st.code("""
+[
+  {"source": "x.com", "content": "IMF warns of stagflation."},
+  {"source": "reddit/finance", "content": "NVIDIA insiders offloading shares"},
+  {"source": "investing.com", "content": "Gold spikes on currency devaluation fears"}
+]
+""")

@@ -1,0 +1,1 @@
+# Placeholder: triggers GPT when entropy threshold is exceeded

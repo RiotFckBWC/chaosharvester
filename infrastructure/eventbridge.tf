@@ -1,0 +1,1 @@
+# Terraform EventBridge trigger for every 5 minutes
