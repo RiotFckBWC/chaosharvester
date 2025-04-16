@@ -26,14 +26,19 @@ with col1:
     # Send to Discord
     discord_url = os.getenv("DISCORD_WEBHOOK")
     if discord_url:
-        requests.post(discord_url, json={"content": f"[ChaosHarvester v2] 🚨 Signal: {signal}\nForecast: {forecast}"})
+        requests.post(discord_url, json={
+            "content": f"[ChaosHarvester v2] 🚨\nSignal: {signal}\nForecast: {forecast}"
+        })
 
     # Send to Telegram
     token = os.getenv("TELEGRAM_BOT_TOKEN")
     chat_id = os.getenv("TELEGRAM_CHAT_ID")
     if token and chat_id:
         telegram_url = f"https://api.telegram.org/bot{token}/sendMessage"
-        data = {"chat_id": chat_id, "text": f"[ChaosHarvester v2] 🚨 Signal: {signal}\nForecast: {forecast}"}
+        data = {
+            "chat_id": chat_id,
+            "text": f"[ChaosHarvester v2] 🚨\nSignal: {signal}\nForecast: {forecast}"
+        }
         requests.post(telegram_url, data=data)
 
     st.info("✅ Forecast alert sent to Discord & Telegram")
